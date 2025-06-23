@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pronósticos Mundial</title>
+</head>
+<body>
+  <h1>Enviar Pronóstico</h1>
+  <form id="formulario">
+    <label>Usuario: <input type="text" name="usuario" required></label><br>
+    <label>Partido: <input type="text" name="partido" required></label><br>
+    <label>Resultado: <input type="text" name="resultado" required></label><br>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <div id="respuesta" style="margin-top: 20px;"></div>
+
+  <script>
+    const form = document.getElementById('formulario');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const datos = {
+        usuario: form.usuario.value,
+        partido: form.partido.value,
+        resultado: form.resultado.value
+      };
+
+      const respuesta = await fetch('/api/pronostico', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+      });
+
+      const resultado = await respuesta.json();
+      document.getElementById('respuesta').innerText = JSON.stringify(resultado, null, 2);
+    });
+  </script>
+</body>
+</html>
+
